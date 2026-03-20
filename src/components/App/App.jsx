@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import Dashboard from "../Dashboard/Dashboard";
@@ -9,10 +10,17 @@ import { AuthProvider } from "../../contexts/AuthContext";
 import "./App.css";
 
 const App = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [resultCount, setResultCount] = useState(undefined);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
   return (
     <AuthProvider>
       <div className="app">
-        <NavBar />
+        <NavBar onSearch={handleSearch} resultCount={resultCount} />
         <main className="app__content">
           <Routes>
             <Route path="/" element={<Login />} />
@@ -21,7 +29,10 @@ const App = () => {
               path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  <Dashboard
+                    searchQuery={searchQuery}
+                    onResultCount={setResultCount}
+                  />
                 </ProtectedRoute>
               }
             />
