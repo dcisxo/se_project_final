@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ApplicantCard from "../ApplicantCard/ApplicantCard";
+import Preloader from "../Preloader/Preloader";
 import { mockApplicants, mockJobs, mockCompanies } from "../../data/mockData";
-import { getCompanyData } from "../../utils/api";
+import { fetchOrgData } from "../../utils/GithubApi";
 import {
   calculateExperienceScore,
   calculateSkillsScore,
@@ -11,12 +12,17 @@ import {
 } from "../../utils/scoring";
 import "./ApplicantList.css";
 
+const PAGE_SIZE = 3;
+const NETWORK_ERROR_MSG =
+  "Sorry, something went wrong during the request. There may be a connection issue or the server may be down. Please try again later.";
+
 const ApplicantList = () => {
   const { jobId } = useParams();
   const navigate = useNavigate();
   const [githubData, setGithubData] = useState({}); // { orgName: { ...data, companySignalsScore } }
   const [githubError, setGithubError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const job = mockJobs.find((j) => j._id === jobId);
   const rawApplicants = mockApplicants.filter((a) => a.jobId === jobId);
@@ -45,7 +51,7 @@ const ApplicantList = () => {
     }
 
     Promise.allSettled(
-      orgs.map((org) => getCompanyData(org).then((data) => ({ org, data }))),
+      orgs.map((org) => fetchOrgData(org).then((data) => ({ org, data }))),
     )
       .then((results) => {
         const map = {};
@@ -58,9 +64,7 @@ const ApplicantList = () => {
           }
         });
         if (failures > 0 && Object.keys(map).length === 0) {
-          setGithubError(
-            "Could not load live company data from GitHub. Scores are based on estimates.",
-          );
+          setGithubError(NETWORK_ERROR_MSG);
         } else if (failures > 0) {
           setGithubError(
             "Some company data could not be loaded. Affected scores are estimates.",
@@ -169,19 +173,27 @@ const ApplicantList = () => {
 
       <div className="applicant-list__cards">
         {isLoading ? (
-          <p className="applicant-list__loading">Loading applicant scores…</p>
-        ) : scoredApplicants.length > 0 ? (
-          scoredApplicants.map((applicant) => (
-            <ApplicantCard
-              key={applicant._id}
-              applicant={applicant}
-              company={applicant._company}
-            />
-          ))
+          <Preloader />
+        ) : scoredApplicants.length === 0 ? (
+          <p className="applicant-list__empty">Nothing found.</p>
         ) : (
-          <p className="applicant-list__empty">
-            No applicants for this position yet.
-          </p>
+          <>
+            {scoredApplicants.slice(0, visibleCount).map((applicant) => (
+              <ApplicantCard
+                key={applicant._id}
+                applicant={applicant}
+                company={applicant._company}
+              />
+            ))}
+            {visibleCount < scoredApplicants.length && (
+              <button
+                className="applicant-list__show-more"
+                onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+              >
+                Show more
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>

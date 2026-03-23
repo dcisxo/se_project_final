@@ -141,3 +141,22 @@
     grid-template-columns: 1fr;
   }
 }
+
+.applicant-list__show-more {
+  display: block;
+  margin: 24px auto 0;
+  padding: 10px 32px;
+  background-color: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  grid-column: 1 / -1;
+  transition: background-color 0.2s;
+}
+
+.applicant-list__show-more:hover {
+  background-color: #4338ca;
+}
