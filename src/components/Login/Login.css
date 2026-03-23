@@ -99,3 +99,19 @@
 .login__register-link:hover {
   text-decoration: underline;
 }
+
+.login__error {
+  color: #dc2626;
+  font-size: 13px;
+  text-align: center;
+  margin: 0;
+  padding: 10px 12px;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+}
+
+.login__button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}

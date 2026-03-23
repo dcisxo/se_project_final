@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { checkToken } from "../utils/auth";
 
 const AuthContext = createContext(null);
 
@@ -9,11 +10,22 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
-    if (token) {
-      // Token validation will be wired to backend later
-      setIsAuthenticated(true);
+    if (!token) {
+      setIsLoading(false);
+      return;
     }
-    setIsLoading(false);
+    checkToken(token)
+      .then(({ user }) => {
+        setCurrentUser(user);
+        setIsAuthenticated(true);
+      })
+      .catch(() => {
+        // Token is invalid or expired — clear it
+        localStorage.removeItem("jwt");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   const login = (userData, token) => {

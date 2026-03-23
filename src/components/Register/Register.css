@@ -1,0 +1,117 @@
+.register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #fff;
+}
+
+.register__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 333px;
+  padding: 96px 0px;
+}
+
+.register__title {
+  font-size: 36px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+.register__subtitle {
+  font-size: 15px;
+  color: #9ca3af;
+  margin: 0 0 32px;
+  text-align: center;
+}
+
+.register__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+}
+
+.register__label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.register__input {
+  padding: 14px 16px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #1a1a2e;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: #fff;
+}
+
+.register__input::placeholder {
+  color: #9ca3af;
+}
+
+.register__input:focus {
+  border-color: #3b4ef8;
+}
+
+.register__error {
+  color: #dc2626;
+  font-size: 13px;
+  text-align: center;
+  margin: 0;
+  padding: 10px 12px;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+}
+
+.register__button {
+  margin-top: 8px;
+  padding: 16px;
+  background-color: #3b4ef8;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.register__button:hover {
+  background-color: #2d3fd6;
+}
+
+.register__button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.register__login {
+  margin-top: 24px;
+  font-size: 14px;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.register__login-link {
+  color: #3b4ef8;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register__login-link:hover {
+  text-decoration: underline;
+}

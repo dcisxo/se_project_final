@@ -1,20 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { registerUser } from "../../utils/auth";
 import "./Register.css";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { login, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Temporary mock register — will be replaced with API call
-    login({ name, email }, "mock-jwt-token");
-    navigate("/dashboard");
+    setError("");
+    if (name.trim().length < 2) {
+      setError("Name must be at least 2 characters");
+      return;
+    }
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+    setIsSubmitting(true);
+    registerUser(name.trim(), email, password)
+      .then(({ token, user }) => {
+        login(user, token);
+        navigate("/dashboard");
+      })
+      .catch((err) => {
+        setError(err.message || "Registration failed. Please try again.");
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -56,8 +84,13 @@ const Register = () => {
               required
             />
           </label>
-          <button type="submit" className="register__button">
-            Create Account
+          {error && <p className="register__error">{error}</p>}
+          <button
+            type="submit"
+            className="register__button"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Creating account…" : "Create Account"}
           </button>
         </form>
         <p className="register__login">
