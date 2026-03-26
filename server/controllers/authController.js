@@ -12,9 +12,14 @@ const makeToken = (user) =>
 
 const register = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
+    const { name, email, password, accessCode } = req.body;
+    if (!name || !email || !password || !accessCode) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+    if (accessCode !== process.env.ORG_ACCESS_CODE) {
+      return res
+        .status(403)
+        .json({ message: "Invalid organization access code" });
     }
     if (password.length < 8) {
       return res
@@ -24,12 +29,10 @@ const register = async (req, res, next) => {
     const hash = await bcrypt.hash(password, SALT_ROUNDS);
     const user = await User.create({ name, email, password: hash });
     const token = makeToken(user);
-    res
-      .status(201)
-      .json({
-        token,
-        user: { _id: user._id, name: user.name, email: user.email },
-      });
+    res.status(201).json({
+      token,
+      user: { _id: user._id, name: user.name, email: user.email },
+    });
   } catch (err) {
     if (err.code === 11000) {
       return res.status(409).json({ message: "Email already in use" });

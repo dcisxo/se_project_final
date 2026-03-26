@@ -43,10 +43,13 @@ const NavBar = ({ onSearch, resultCount }) => {
         </form>
       )}
       <nav className="navbar__nav">
+        <Link to="/jobs/board" className="navbar__link navbar__link--board">
+          Job Board
+        </Link>
         {isAuthenticated ? (
           <>
-            <Link to="/dashboard" className="navbar__link">
-              Dashboard
+            <Link to="/applicants" className="navbar__link">
+              Applicants
             </Link>
             <div
               className="navbar__profile"

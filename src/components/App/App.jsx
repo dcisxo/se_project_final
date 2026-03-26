@@ -3,6 +3,8 @@ import { Routes, Route } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import Dashboard from "../Dashboard/Dashboard";
 import ApplicantList from "../ApplicantList/ApplicantList";
+import JobBoard from "../JobBoard/JobBoard";
+import JobApply from "../JobApply/JobApply";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 import ProtectedRoute from "../ProtectedRoutes/ProtectedRoute";
@@ -37,6 +39,14 @@ const App = () => {
               }
             />
             <Route
+              path="/applicants"
+              element={
+                <ProtectedRoute>
+                  <ApplicantList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/jobs/:jobId/applicants"
               element={
                 <ProtectedRoute>
@@ -44,6 +54,8 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route path="/jobs/board" element={<JobBoard />} />
+            <Route path="/jobs/:jobId/apply" element={<JobApply />} />
           </Routes>
         </main>
       </div>

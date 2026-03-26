@@ -5,6 +5,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const jobRoutes = require("./routes/jobRoutes");
+const applicantRoutes = require("./routes/applicantRoutes");
+const publicRoutes = require("./routes/publicRoutes");
+const { getAllApplicants } = require("./controllers/applicantController");
+const auth = require("./middleware/auth");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
@@ -21,7 +25,10 @@ app.use(express.json());
 
 // Routes
 app.use("/auth", authRoutes);
+app.use("/api/public", publicRoutes);
 app.use("/api", jobRoutes);
+app.get("/api/applicants", auth, getAllApplicants);
+app.use("/api/jobs/:jobId/applicants", applicantRoutes);
 
 // 404 handler
 app.use((req, res) => {

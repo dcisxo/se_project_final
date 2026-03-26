@@ -8,6 +8,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [accessCode, setAccessCode] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login, isAuthenticated, isLoading } = useAuth();
@@ -31,8 +32,12 @@ const Register = () => {
       setError("Password must be at least 8 characters");
       return;
     }
+    if (!accessCode.trim()) {
+      setError("Organization access code is required");
+      return;
+    }
     setIsSubmitting(true);
-    registerUser(name.trim(), email, password)
+    registerUser(name.trim(), email, password, accessCode.trim())
       .then(({ token, user }) => {
         login(user, token);
         navigate("/dashboard");
@@ -49,7 +54,9 @@ const Register = () => {
     <div className="register">
       <div className="register__container">
         <h1 className="register__title">Create Account</h1>
-        <p className="register__subtitle">Start ranking applicants today</p>
+        <p className="register__subtitle">
+          Organizations only — enter your access code to register
+        </p>
         <form className="register__form" onSubmit={handleSubmit}>
           <label className="register__label">
             Name
@@ -82,6 +89,18 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
+            />
+          </label>
+          <label className="register__label">
+            Organization Access Code
+            <input
+              type="text"
+              className="register__input"
+              value={accessCode}
+              onChange={(e) => setAccessCode(e.target.value)}
+              placeholder="Enter your access code"
+              required
+              autoComplete="off"
             />
           </label>
           {error && <p className="register__error">{error}</p>}

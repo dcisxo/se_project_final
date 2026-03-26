@@ -10,6 +10,61 @@
     box-shadow 0.2s;
 }
 
+.applicant-card--compact .applicant-card__body {
+  padding: 12px;
+  gap: 8px;
+}
+
+.applicant-card--compact .applicant-card__name {
+  font-size: 14px;
+}
+
+.applicant-card--compact .applicant-card__email {
+  font-size: 11px;
+}
+
+.applicant-card--compact .applicant-card__final-score {
+  width: 44px;
+  height: 44px;
+}
+
+.applicant-card--compact .applicant-card__score-value {
+  font-size: 13px;
+}
+
+.applicant-card--compact .applicant-card__meta {
+  font-size: 11px;
+  padding-bottom: 8px;
+  gap: 5px;
+}
+
+.applicant-card--compact .applicant-card__skills {
+  gap: 4px;
+}
+
+.applicant-card--compact .applicant-card__skill-tag {
+  font-size: 11px;
+  padding: 2px 7px;
+}
+
+.applicant-card--compact .applicant-card__breakdown {
+  gap: 4px;
+}
+
+.applicant-card--compact .applicant-card__company {
+  padding-top: 6px;
+  font-size: 11px;
+}
+
+.applicant-card--compact .applicant-card__actions {
+  gap: 6px;
+}
+
+.applicant-card--compact .applicant-card__action-btn {
+  font-size: 11px;
+  padding: 5px 10px;
+}
+
 .applicant-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -189,4 +244,92 @@
   font-size: 12px;
   color: #9ca3af;
   margin: 0;
+}
+
+/* Header right (badge + score) */
+.applicant-card__header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Status badge */
+.applicant-card__status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.applicant-card__status-badge--pending {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.applicant-card__status-badge--interview {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.applicant-card__status-badge--rejected {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Action buttons */
+.applicant-card__actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.applicant-card__action-btn {
+  flex: 1;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.applicant-card__action-btn--interview {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border-color: #bbf7d0;
+}
+
+.applicant-card__action-btn--interview:hover {
+  background-color: #dcfce7;
+}
+
+.applicant-card__action-btn--interview.applicant-card__action-btn--active {
+  background-color: #16a34a;
+  color: #fff;
+  border-color: #16a34a;
+}
+
+.applicant-card__action-btn--reject {
+  background-color: #fff5f5;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.applicant-card__action-btn--reject:hover {
+  background-color: #fee2e2;
+}
+
+.applicant-card__action-btn--reject.applicant-card__action-btn--active {
+  background-color: #dc2626;
+  color: #fff;
+  border-color: #dc2626;
 }

@@ -23,7 +23,12 @@ const _getUsers = () => JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
 const _saveUsers = (users) =>
   localStorage.setItem(USERS_KEY, JSON.stringify(users));
 
-const _stubRegister = (name, email, password) => {
+const STUB_ACCESS_CODE = "HIRERANK-2026";
+
+const _stubRegister = (name, email, password, accessCode) => {
+  if (accessCode !== STUB_ACCESS_CODE) {
+    return Promise.reject(new Error("Invalid organization access code"));
+  }
   const users = _getUsers();
   if (users.find((u) => u.email === email)) {
     return Promise.reject(new Error("Email already in use"));
@@ -71,17 +76,17 @@ const checkResponse = (res) => {
   return res.json();
 };
 
-export const registerUser = (name, email, password) =>
+export const registerUser = (name, email, password, accessCode) =>
   fetch(`${BASE_URL}/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, email, password }),
+    body: JSON.stringify({ name, email, password, accessCode }),
   })
     .then(checkResponse)
     .catch((err) => {
       if (err instanceof TypeError) {
         // Server unreachable — use stub
-        return _stubRegister(name, email, password);
+        return _stubRegister(name, email, password, accessCode);
       }
       throw err;
     });

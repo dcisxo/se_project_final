@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./JobCard.css";
 
 const placeholderImages = [
@@ -6,9 +7,25 @@ const placeholderImages = [
   "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&auto=format&fit=crop",
 ];
 
-const JobCard = ({ job, onClick, index = 0 }) => {
+const JobCard = ({ job, onClick, onEdit, index = 0 }) => {
   const { _id, title, department, location, requirements, isActive } = job;
   const image = placeholderImages[index % placeholderImages.length];
+
+  const [copied, setCopied] = useState(false);
+
+  const handleEditClick = (e) => {
+    e.stopPropagation();
+    onEdit(job);
+  };
+
+  const handleShareClick = (e) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}/jobs/${_id}/apply`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   return (
     <div
@@ -17,6 +34,22 @@ const JobCard = ({ job, onClick, index = 0 }) => {
     >
       <div className="job-card__image-wrapper">
         <img src={image} alt={title} className="job-card__image" />
+        {onEdit && (
+          <button
+            className="job-card__edit-btn"
+            onClick={handleEditClick}
+            aria-label="Edit job"
+          >
+            Edit
+          </button>
+        )}
+        <button
+          className="job-card__share-btn"
+          onClick={handleShareClick}
+          aria-label="Copy apply link"
+        >
+          {copied ? "Copied!" : "Share"}
+        </button>
       </div>
 
       <div className="job-card__body">

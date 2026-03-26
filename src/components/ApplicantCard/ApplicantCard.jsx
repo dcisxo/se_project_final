@@ -1,7 +1,20 @@
 import "./ApplicantCard.css";
 
-const ApplicantCard = ({ applicant, company }) => {
+const STATUS_LABELS = {
+  pending: "Pending",
+  interview: "Set for Interview",
+  rejected: "Rejected",
+};
+
+const ApplicantCard = ({
+  applicant,
+  company,
+  jobTitle,
+  onStatusChange,
+  compact,
+}) => {
   const {
+    _id,
     name,
     email,
     rank,
@@ -11,6 +24,7 @@ const ApplicantCard = ({ applicant, company }) => {
     industry,
     categoryScores,
     appliedAt,
+    status = "pending",
   } = applicant;
 
   const formattedDate = new Date(appliedAt).toLocaleDateString("en-US", {
@@ -26,7 +40,9 @@ const ApplicantCard = ({ applicant, company }) => {
   };
 
   return (
-    <div className="applicant-card">
+    <div
+      className={`applicant-card${compact ? " applicant-card--compact" : ""}`}
+    >
       <div className="applicant-card__rank">#{rank}</div>
       <div className="applicant-card__body">
         <div className="applicant-card__header">
@@ -34,15 +50,22 @@ const ApplicantCard = ({ applicant, company }) => {
             <h3 className="applicant-card__name">{name}</h3>
             <p className="applicant-card__email">{email}</p>
           </div>
-          <div
-            className={`applicant-card__final-score ${getScoreClass(
-              finalScore,
-            )}`}
-          >
-            <span className="applicant-card__score-value">
-              {finalScore.toFixed(1)}
+          <div className="applicant-card__header-right">
+            <span
+              className={`applicant-card__status-badge applicant-card__status-badge--${status}`}
+            >
+              {STATUS_LABELS[status]}
             </span>
-            <span className="applicant-card__score-label">Score</span>
+            <div
+              className={`applicant-card__final-score ${getScoreClass(
+                finalScore,
+              )}`}
+            >
+              <span className="applicant-card__score-value">
+                {finalScore.toFixed(1)}
+              </span>
+              <span className="applicant-card__score-label">Score</span>
+            </div>
           </div>
         </div>
 
@@ -50,6 +73,11 @@ const ApplicantCard = ({ applicant, company }) => {
           <span>{experienceYears} yrs experience</span>
           <span>{industry}</span>
           {company && <span>{company.name}</span>}
+          {jobTitle && (
+            <span>
+              Applied for: <strong>{jobTitle}</strong>
+            </span>
+          )}
           <span>Applied {formattedDate}</span>
         </div>
 
@@ -62,7 +90,7 @@ const ApplicantCard = ({ applicant, company }) => {
         </ul>
 
         <div className="applicant-card__breakdown">
-          {Object.entries(categoryScores).map(([category, score]) => (
+          {Object.entries(categoryScores || {}).map(([category, score]) => (
             <div key={category} className="applicant-card__category">
               <span className="applicant-card__category-label">{category}</span>
               <div className="applicant-card__bar-track">
@@ -85,6 +113,33 @@ const ApplicantCard = ({ applicant, company }) => {
               {company.publicRepos} public repos ·{" "}
               {company.followers.toLocaleString()} followers
             </p>
+          </div>
+        )}
+
+        {onStatusChange && (
+          <div className="applicant-card__actions">
+            <button
+              className={`applicant-card__action-btn applicant-card__action-btn--interview${status === "interview" ? " applicant-card__action-btn--active" : ""}`}
+              onClick={() =>
+                onStatusChange(
+                  _id,
+                  status === "interview" ? "pending" : "interview",
+                )
+              }
+            >
+              {status === "interview" ? "✓ Interview" : "Set for Interview"}
+            </button>
+            <button
+              className={`applicant-card__action-btn applicant-card__action-btn--reject${status === "rejected" ? " applicant-card__action-btn--active" : ""}`}
+              onClick={() =>
+                onStatusChange(
+                  _id,
+                  status === "rejected" ? "pending" : "rejected",
+                )
+              }
+            >
+              {status === "rejected" ? "✓ Rejected" : "Reject"}
+            </button>
           </div>
         )}
       </div>

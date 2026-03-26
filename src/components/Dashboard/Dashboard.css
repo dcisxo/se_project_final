@@ -5,6 +5,10 @@
 }
 
 .dashboard__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 32px;
 }
 
@@ -72,4 +76,32 @@
   font-size: 14px;
   color: #6b7280;
   margin: 0;
+}
+
+.dashboard__error {
+  font-size: 14px;
+  color: #dc2626;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 0;
+}
+
+.dashboard__new-job {
+  flex-shrink: 0;
+  padding: 9px 18px;
+  background-color: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.dashboard__new-job:hover {
+  background-color: #4338ca;
 }

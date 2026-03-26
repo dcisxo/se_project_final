@@ -74,6 +74,11 @@
   font-size: 16px;
 }
 
+.navbar__link--board {
+  color: #4f46e5;
+  font-weight: 600;
+}
+
 .navbar__nav {
   display: flex;
   align-items: center;
