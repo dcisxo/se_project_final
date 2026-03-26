@@ -19,6 +19,12 @@ module.exports = {
 
     // Disable prop-types validation.
     "react/prop-types": 0,
+
+    // Allow intentionally unused variables/args prefixed with _
+    "no-unused-vars": [
+      "error",
+      { varsIgnorePattern: "^_", argsIgnorePattern: "^_" },
+    ],
   },
 
   // Add an overrides array. Without this, ESLint could only be run via
@@ -28,6 +34,12 @@ module.exports = {
     {
       // Without this, `npx eslint .` doesn't run on jsx files.
       files: ["*.js", "*.jsx"],
+    },
+    {
+      // Server-side CommonJS files run in Node, not the browser.
+      files: ["server/**/*.js"],
+      env: { node: true, commonjs: true, browser: false },
+      parserOptions: { sourceType: "script" },
     },
   ],
 };

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import useAuth from "../../hooks/useAuth";
 import { loginUser } from "../../utils/auth";
 import "./Login.css";
 
@@ -78,7 +78,7 @@ const Login = () => {
           </button>
         </form>
         <p className="login__register">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <a href="/register" className="login__register-link">
             Register
           </a>
