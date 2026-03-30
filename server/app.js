@@ -1,15 +1,15 @@
-require("dotenv").config();
+import "dotenv/config";
 
-import express, { json } from "express";
+import express from "express";
 import { connect } from "mongoose";
 import cors from "cors";
-import authRoutes from "./routes/authRoutes";
-import jobRoutes from "./routes/jobRoutes";
-import applicantRoutes from "./routes/applicantRoutes";
-import publicRoutes from "./routes/publicRoutes";
-import { getAllApplicants } from "./controllers/applicantController";
-import auth from "./middleware/auth";
-import errorHandler from "./middleware/errorHandler";
+import authRoutes from "./routes/authRoutes.js";
+import jobRoutes from "./routes/jobRoutes.js";
+import applicantRoutes from "./routes/applicantRoutes.js";
+import publicRoutes from "./routes/publicRoutes.js";
+import { getAllApplicants } from "./controllers/applicantController.js";
+import auth from "./middleware/auth.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,7 +21,7 @@ app.use(
     credentials: true,
   }),
 );
-app.use(json());
+app.use(express.json());
 
 // Routes
 app.use("/auth", authRoutes);

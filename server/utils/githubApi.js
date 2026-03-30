@@ -1,6 +1,6 @@
-import { create } from "axios";
+import axios from "axios";
 
-const githubClient = create({
+const githubClient = axios.create({
   baseURL: "https://api.github.com",
   timeout: 8000,
   headers: {
@@ -31,4 +31,4 @@ const fetchOrgData = async (orgName) => {
   };
 };
 
-export default { fetchOrgData };
+export { fetchOrgData };

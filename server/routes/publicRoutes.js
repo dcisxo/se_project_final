@@ -4,7 +4,7 @@ import {
   getPublicJobs,
   getPublicJobById,
   applyToJob,
-} from "../controllers/publicController";
+} from "../controllers/publicController.js";
 
 router.get("/jobs", getPublicJobs);
 router.get("/jobs/:jobId", getPublicJobById);

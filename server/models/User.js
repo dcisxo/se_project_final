@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { compare } from "bcryptjs";
+import bcrypt from "bcryptjs";
 
 const userSchema = new Schema(
   {
@@ -31,7 +31,7 @@ userSchema.statics.findUserByCredentials = async function (email, password) {
     err.statusCode = 401;
     throw err;
   }
-  const isMatch = await compare(password, user.password);
+  const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     const err = new Error("Incorrect email or password");
     err.statusCode = 401;

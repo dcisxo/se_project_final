@@ -36,10 +36,10 @@ module.exports = {
       files: ["*.js", "*.jsx"],
     },
     {
-      // Server-side CommonJS files run in Node, not the browser.
+      // Server-side ESM files run in Node, not the browser.
       files: ["server/**/*.js"],
-      env: { node: true, commonjs: true, browser: false },
-      parserOptions: { sourceType: "script" },
+      env: { node: true, browser: false },
+      parserOptions: { sourceType: "module" },
     },
   ],
 };

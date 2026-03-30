@@ -4,8 +4,8 @@ import {
   getApplicants,
   createApplicant,
   updateApplicantStatus,
-} from "../controllers/applicantController";
-import auth from "../middleware/auth";
+} from "../controllers/applicantController.js";
+import auth from "../middleware/auth.js";
 
 router.get("/", auth, getApplicants);
 router.post("/", auth, createApplicant);

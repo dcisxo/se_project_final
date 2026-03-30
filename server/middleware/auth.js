@@ -1,4 +1,4 @@
-import { verify } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 export default (req, res, next) => {
   const { authorization } = req.headers;
@@ -7,7 +7,7 @@ export default (req, res, next) => {
   }
   const token = authorization.replace("Bearer ", "");
   try {
-    const payload = verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
     req.user = payload;
     next();
   } catch {

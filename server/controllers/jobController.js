@@ -1,6 +1,6 @@
-import { fetchOrgData } from "../utils/githubApi";
-import { calculateCompanySignalsScore } from "../utils/scoringEngine";
-import Job, { find, findByIdAndUpdate, findById } from "../models/Job";
+import { fetchOrgData } from "../utils/githubApi.js";
+import { calculateCompanySignalsScore } from "../utils/scoringEngine.js";
+import Job from "../models/Job.js";
 
 // Only allow valid GitHub org name characters
 const VALID_ORG_RE = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,37}$/;
@@ -32,7 +32,7 @@ const getCompanyData = async (req, res, next) => {
 
 const getJobs = async (req, res, next) => {
   try {
-    const jobs = await find().sort({ createdAt: -1 });
+    const jobs = await Job.find().sort({ createdAt: -1 });
     res.json(jobs);
   } catch (err) {
     next(err);
@@ -79,7 +79,7 @@ const updateJob = async (req, res, next) => {
       weightConfig,
       isActive,
     } = req.body;
-    const job = await findByIdAndUpdate(
+    const job = await Job.findByIdAndUpdate(
       id,
       {
         title,
@@ -103,7 +103,7 @@ const updateJob = async (req, res, next) => {
 
 const getJobById = async (req, res, next) => {
   try {
-    const job = await findById(req.params.id);
+    const job = await Job.findById(req.params.id);
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
     }
@@ -113,4 +113,4 @@ const getJobById = async (req, res, next) => {
   }
 };
 
-export default { getCompanyData, getJobs, getJobById, createJob, updateJob };
+export { getCompanyData, getJobs, getJobById, createJob, updateJob };

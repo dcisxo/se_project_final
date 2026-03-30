@@ -17,6 +17,7 @@ const ApplicantCard = ({
     _id,
     name,
     email,
+    phone,
     rank,
     finalScore,
     experienceYears,
@@ -49,6 +50,7 @@ const ApplicantCard = ({
           <div>
             <h3 className="applicant-card__name">{name}</h3>
             <p className="applicant-card__email">{email}</p>
+            {phone && <p className="applicant-card__phone">{phone}</p>}
           </div>
           <div className="applicant-card__header-right">
             <span

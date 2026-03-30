@@ -27,6 +27,7 @@ const JobApply = () => {
 
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -46,24 +47,35 @@ const JobApply = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
+    const newForm = { ...form, [name]: value };
+    setForm(newForm);
+    if (touched[name]) {
+      const allErrs = validate(newForm);
+      setErrors((prev) => ({ ...prev, [name]: allErrs[name] || "" }));
+    }
   };
 
-  const validate = () => {
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    const allErrs = validate();
+    setErrors((prev) => ({ ...prev, [name]: allErrs[name] || "" }));
+  };
+
+  const validate = (formData = form) => {
     const errs = {};
-    if (!form.name.trim()) errs.name = "Name is required";
-    if (!form.email.trim()) errs.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+    if (!formData.name.trim()) errs.name = "Name is required";
+    if (!formData.email.trim()) errs.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
       errs.email = "Enter a valid email";
     if (
-      form.experienceYears === "" ||
-      isNaN(Number(form.experienceYears)) ||
-      Number(form.experienceYears) < 0
+      formData.experienceYears === "" ||
+      isNaN(Number(formData.experienceYears)) ||
+      Number(formData.experienceYears) < 0
     )
       errs.experienceYears = "Enter a valid number of years";
-    if (!form.skills.trim()) errs.skills = "Enter at least one skill";
-    if (!form.industry.trim()) errs.industry = "Industry is required";
+    if (!formData.skills.trim()) errs.skills = "Enter at least one skill";
+    if (!formData.industry.trim()) errs.industry = "Industry is required";
     return errs;
   };
 
@@ -179,6 +191,15 @@ const JobApply = () => {
       </div>
     );
   }
+
+  const isFormValid =
+    form.name.trim() !== "" &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email) &&
+    form.experienceYears !== "" &&
+    !isNaN(Number(form.experienceYears)) &&
+    Number(form.experienceYears) >= 0 &&
+    form.skills.trim() !== "" &&
+    form.industry.trim() !== "";
 
   const reqChecks = (() => {
     const applicantSkills = form.skills
@@ -303,6 +324,7 @@ const JobApply = () => {
               name="name"
               value={form.name}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Alex Rivera"
             />
             {errors.name && (
@@ -320,6 +342,7 @@ const JobApply = () => {
               name="email"
               value={form.email}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="alex@example.com"
             />
             {errors.email && (
@@ -340,6 +363,7 @@ const JobApply = () => {
               name="experienceYears"
               value={form.experienceYears}
               onChange={handleChange}
+              onBlur={handleBlur}
               min="0"
               placeholder="3"
             />
@@ -351,7 +375,7 @@ const JobApply = () => {
           </div>
           <div className="job-apply__field">
             <label className="job-apply__label" htmlFor="ja-industry">
-              Industry <span className="job-apply__required">*</span>
+              Industry Experience <span className="job-apply__required">*</span>
             </label>
             <input
               id="ja-industry"
@@ -359,6 +383,7 @@ const JobApply = () => {
               name="industry"
               value={form.industry}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="e.g. Healthcare, Finance, Retail"
             />
             {errors.industry && (
@@ -378,6 +403,7 @@ const JobApply = () => {
             name="skills"
             value={form.skills}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="e.g. Communication, Leadership, Sales"
           />
           {errors.skills && (
@@ -471,7 +497,7 @@ const JobApply = () => {
         <button
           type="submit"
           className="job-apply__submit-btn"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !isFormValid}
         >
           {isSubmitting ? "Submitting…" : "Submit Application"}
         </button>

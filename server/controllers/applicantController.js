@@ -1,15 +1,15 @@
-import Applicant, { find, findOneAndUpdate } from "../models/Applicant";
-import { findById } from "../models/Job";
-import { fetchOrgData } from "../utils/githubApi";
-import { calculateCompanySignalsScore } from "../utils/scoringEngine";
+import Applicant from "../models/Applicant.js";
+import Job from "../models/Job.js";
+import { fetchOrgData } from "../utils/githubApi.js";
+import { calculateCompanySignalsScore } from "../utils/scoringEngine.js";
 
 const getApplicants = async (req, res, next) => {
   try {
-    const job = await findById(req.params.jobId);
+    const job = await Job.findById(req.params.jobId);
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
     }
-    const applicants = await find({ jobId: req.params.jobId }).sort({
+    const applicants = await Applicant.find({ jobId: req.params.jobId }).sort({
       appliedAt: -1,
     });
     res.json(applicants);
@@ -20,7 +20,7 @@ const getApplicants = async (req, res, next) => {
 
 const createApplicant = async (req, res, next) => {
   try {
-    const job = await findById(req.params.jobId);
+    const job = await Job.findById(req.params.jobId);
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
     }
@@ -68,7 +68,7 @@ const createApplicant = async (req, res, next) => {
 const updateApplicantStatus = async (req, res, next) => {
   try {
     const { status } = req.body;
-    const applicant = await findOneAndUpdate(
+    const applicant = await Applicant.findOneAndUpdate(
       { _id: req.params.applicantId, jobId: req.params.jobId },
       { status },
       { new: true, runValidators: true },
@@ -84,14 +84,14 @@ const updateApplicantStatus = async (req, res, next) => {
 
 const getAllApplicants = async (req, res, next) => {
   try {
-    const applicants = await find({}).sort({ appliedAt: -1 });
+    const applicants = await Applicant.find({}).sort({ appliedAt: -1 });
     res.json(applicants);
   } catch (err) {
     next(err);
   }
 };
 
-export default {
+export {
   getApplicants,
   createApplicant,
   updateApplicantStatus,

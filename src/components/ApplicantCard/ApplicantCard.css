@@ -108,6 +108,12 @@
   margin: 0;
 }
 
+.applicant-card__phone {
+  font-size: 13px;
+  color: #9ca3af;
+  margin: 2px 0 0;
+}
+
 .applicant-card__final-score {
   display: flex;
   flex-direction: column;

@@ -1,12 +1,12 @@
-import { hash as _hash } from "bcryptjs";
-import { sign } from "jsonwebtoken";
-import { create, findUserByCredentials, findById } from "../models/User";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
 const SALT_ROUNDS = 10;
 const TOKEN_EXPIRY = "7d";
 
 const makeToken = (user) =>
-  sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, {
+  jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, {
     expiresIn: TOKEN_EXPIRY,
   });
 
@@ -26,8 +26,8 @@ const register = async (req, res, next) => {
         .status(400)
         .json({ message: "Password must be at least 8 characters" });
     }
-    const hash = await _hash(password, SALT_ROUNDS);
-    const user = await create({ name, email, password: hash });
+    const hash = await bcrypt.hash(password, SALT_ROUNDS);
+    const user = await User.create({ name, email, password: hash });
     const token = makeToken(user);
     res.status(201).json({
       token,
@@ -49,7 +49,7 @@ const login = async (req, res, next) => {
         .status(400)
         .json({ message: "Email and password are required" });
     }
-    const user = await findUserByCredentials(email, password);
+    const user = await User.findUserByCredentials(email, password);
     const token = makeToken(user);
     res.json({
       token,
@@ -62,7 +62,7 @@ const login = async (req, res, next) => {
 
 const getCurrentUser = async (req, res, next) => {
   try {
-    const user = await findById(req.user._id);
+    const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -72,4 +72,4 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
-export default { register, login, getCurrentUser };
+export { register, login, getCurrentUser };

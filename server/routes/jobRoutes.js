@@ -6,8 +6,8 @@ import {
   getJobById,
   createJob,
   updateJob,
-} from "../controllers/jobController";
-import auth from "../middleware/auth";
+} from "../controllers/jobController.js";
+import auth from "../middleware/auth.js";
 
 // Protected: requires valid JWT
 router.get("/github/:orgName", auth, getCompanyData);
