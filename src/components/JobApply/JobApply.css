@@ -297,6 +297,93 @@
   color: #9ca3af;
 }
 
+/* GitHub org preview */
+.job-apply__org-status {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 4px 0 0;
+}
+
+.job-apply__org-error {
+  font-size: 12px;
+  color: #ef4444;
+  margin: 4px 0 0;
+}
+
+.job-apply__org-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: #f5f3ff;
+  border: 1px solid #c4b5fd;
+  border-radius: 10px;
+}
+
+.job-apply__org-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.job-apply__org-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.job-apply__org-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.job-apply__org-desc {
+  font-size: 12px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.job-apply__org-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.job-apply__org-stat {
+  font-size: 12px;
+  color: #374151;
+}
+
+.job-apply__org-score {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.job-apply__org-score--high {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.job-apply__org-score--mid {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+.job-apply__org-score--low {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
 /* Auto-rejected state */
 .job-apply__rejected {
   text-align: center;

@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 import { getPublicJobById, applyToJob } from "../../utils/api";
+import { fetchOrgData } from "../../utils/GithubApi";
 import "./JobApply.css";
 
 const INITIAL_FORM = {
@@ -33,6 +34,36 @@ const JobApply = () => {
   const [submitted, setSubmitted] = useState(false);
   const [autoRejected, setAutoRejected] = useState(false);
   const [rejectionReasons, setRejectionReasons] = useState([]);
+
+  const [orgPreview, setOrgPreview] = useState(null);
+  const [orgLoading, setOrgLoading] = useState(false);
+  const [orgError, setOrgError] = useState(null);
+  const orgDebounceRef = useRef(null);
+
+  useEffect(() => {
+    const value = form.githubOrg.trim();
+    setOrgPreview(null);
+    setOrgError(null);
+    if (orgDebounceRef.current) clearTimeout(orgDebounceRef.current);
+    if (!value) {
+      setOrgLoading(false);
+      return;
+    }
+    setOrgLoading(true);
+    orgDebounceRef.current = setTimeout(() => {
+      fetchOrgData(value)
+        .then((data) => {
+          setOrgPreview(data);
+          setOrgError(null);
+        })
+        .catch(() => {
+          setOrgPreview(null);
+          setOrgError(`No GitHub organisation found for "${value}"`);
+        })
+        .finally(() => setOrgLoading(false));
+    }, 600);
+    return () => clearTimeout(orgDebounceRef.current);
+  }, [form.githubOrg]);
 
   useEffect(() => {
     getPublicJobById(jobId)
@@ -440,6 +471,48 @@ const JobApply = () => {
             onChange={handleChange}
             placeholder="e.g. microsoft, vercel, stripe"
           />
+          {orgLoading && (
+            <p className="job-apply__org-status">Looking up GitHub org…</p>
+          )}
+          {orgError && !orgLoading && (
+            <p className="job-apply__org-error">{orgError}</p>
+          )}
+          {orgPreview && !orgLoading && (
+            <div className="job-apply__org-card">
+              <img
+                className="job-apply__org-avatar"
+                src={orgPreview.avatarUrl}
+                alt={orgPreview.name}
+              />
+              <div className="job-apply__org-info">
+                <span className="job-apply__org-name">{orgPreview.name}</span>
+                {orgPreview.description && (
+                  <span className="job-apply__org-desc">
+                    {orgPreview.description}
+                  </span>
+                )}
+                <div className="job-apply__org-stats">
+                  <span className="job-apply__org-stat">
+                    <strong>{orgPreview.publicRepos}</strong> public repos
+                  </span>
+                  <span className="job-apply__org-stat">
+                    <strong>{orgPreview.followers}</strong> followers
+                  </span>
+                  <span
+                    className={`job-apply__org-score job-apply__org-score--${
+                      orgPreview.companySignalsScore >= 70
+                        ? "high"
+                        : orgPreview.companySignalsScore >= 40
+                          ? "mid"
+                          : "low"
+                    }`}
+                  >
+                    Signal score: {orgPreview.companySignalsScore}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="job-apply__row">
