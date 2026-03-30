@@ -3,8 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import ApplicantCard from "../ApplicantCard/ApplicantCard";
 import ApplicantForm from "../ApplicantForm/ApplicantForm";
 import Preloader from "../Preloader/Preloader";
-import { mockCompanies } from "../../data/mockData";
-import { fetchOrgData } from "../../utils/GithubApi";
 import {
   getJob,
   getJobs,
@@ -38,9 +36,7 @@ const ApplicantList = () => {
   const [job, setJob] = useState(null);
   const [allJobs, setAllJobs] = useState([]);
   const [applicants, setApplicants] = useState([]);
-  const [githubData, setGithubData] = useState({});
   const [error, setError] = useState(null);
-  const [githubError, setGithubError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [jobNotFound, setJobNotFound] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -52,54 +48,13 @@ const ApplicantList = () => {
   useEffect(() => {
     setIsLoading(true);
     setError(null);
-    setGithubError(null);
     setJobNotFound(false);
-
-    const fetchApplicants = (rawApplicants) => {
-      setApplicants(rawApplicants);
-
-      const orgs = [
-        ...new Set(
-          rawApplicants
-            .map(
-              (a) =>
-                mockCompanies.find((c) => c._id === a.currentCompany)
-                  ?.githubOrg,
-            )
-            .filter(Boolean),
-        ),
-      ];
-
-      if (orgs.length === 0) return Promise.resolve();
-
-      return Promise.allSettled(
-        orgs.map((org) => fetchOrgData(org).then((data) => ({ org, data }))),
-      ).then((results) => {
-        const map = {};
-        let failures = 0;
-        results.forEach((result) => {
-          if (result.status === "fulfilled") {
-            map[result.value.org] = result.value.data;
-          } else {
-            failures++;
-          }
-        });
-        if (failures > 0 && Object.keys(map).length === 0) {
-          setGithubError(NETWORK_ERROR_MSG);
-        } else if (failures > 0) {
-          setGithubError(
-            "Some company data could not be loaded. Affected scores are estimates.",
-          );
-        }
-        setGithubData(map);
-      });
-    };
 
     if (!jobId) {
       Promise.all([getAllApplicants(), getJobs()])
         .then(([rawApplicants, jobs]) => {
           setAllJobs(jobs);
-          return fetchApplicants(rawApplicants);
+          setApplicants(rawApplicants);
         })
         .catch(() => setError(NETWORK_ERROR_MSG))
         .finally(() => setIsLoading(false));
@@ -115,7 +70,7 @@ const ApplicantList = () => {
         }
         setJob(fetchedJob);
 
-        return getApplicants(jobId).then(fetchApplicants);
+        return getApplicants(jobId).then(setApplicants);
       })
       .catch(() => setError(NETWORK_ERROR_MSG))
       .finally(() => setIsLoading(false));
@@ -181,27 +136,19 @@ const ApplicantList = () => {
   // Compute live scores for each applicant then rank by finalScore
   const scoredApplicants = applicants
     .map((applicant) => {
-      const mockCompany = mockCompanies.find(
-        (c) => c._id === applicant.currentCompany,
-      );
-      const ghData = mockCompany && githubData[mockCompany.githubOrg];
+      const company = applicant.currentCompany
+        ? { name: applicant.currentCompany }
+        : applicant.githubOrg
+          ? { name: applicant.githubOrg }
+          : null;
 
-      const company = ghData
-        ? {
-            name: ghData.name || mockCompany?.name,
-            publicRepos: ghData.publicRepos,
-            followers: ghData.followers,
-          }
-        : mockCompany;
+      const companySignals = applicant.companySignalsScore ?? 50;
 
       if (!job) {
         const applicantJob = allJobs.find(
           (j) => String(j._id) === String(applicant.jobId),
         );
         if (applicantJob) {
-          const companySignals = ghData
-            ? ghData.companySignalsScore
-            : (applicant.categoryScores?.companySignals ?? 50);
           const categoryScores = {
             experience: calculateExperienceScore(
               applicant.experienceYears,
@@ -241,10 +188,6 @@ const ApplicantList = () => {
           _company: company,
         };
       }
-
-      const companySignals = ghData
-        ? ghData.companySignalsScore
-        : (applicant.categoryScores?.companySignals ?? 50);
 
       const categoryScores = {
         experience: calculateExperienceScore(
@@ -413,12 +356,6 @@ const ApplicantList = () => {
               ))}
             </ul>
           </div>
-        </div>
-      )}
-
-      {githubError && (
-        <div className="applicant-list__warning">
-          <p>{githubError}</p>
         </div>
       )}
 

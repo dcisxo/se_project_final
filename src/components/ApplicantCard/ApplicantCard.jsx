@@ -109,10 +109,12 @@ const ApplicantCard = ({
             <p className="applicant-card__company-name">
               Current Company: {company.name}
             </p>
-            <p className="applicant-card__company-meta">
-              {company.publicRepos} public repos ·{" "}
-              {company.followers.toLocaleString()} followers
-            </p>
+            {company.publicRepos != null && company.followers != null && (
+              <p className="applicant-card__company-meta">
+                {company.publicRepos} public repos &middot;{" "}
+                {company.followers.toLocaleString()} followers
+              </p>
+            )}
           </div>
         )}
 

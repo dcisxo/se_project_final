@@ -16,6 +16,8 @@ const applicantSchema = new mongoose.Schema(
     phone: { type: String, trim: true, default: "" },
     linkedinUrl: { type: String, trim: true, default: "" },
     coverLetter: { type: String, trim: true, default: "" },
+    githubOrg: { type: String, trim: true, default: "" },
+    companySignalsScore: { type: Number, default: null },
     appliedAt: { type: Date, default: Date.now },
     status: {
       type: String,

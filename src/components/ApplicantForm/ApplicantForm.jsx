@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { mockCompanies } from "../../data/mockData";
 import "./ApplicantForm.css";
 
 const INITIAL_FORM = {
@@ -8,7 +7,7 @@ const INITIAL_FORM = {
   experienceYears: "",
   skills: "",
   industry: "",
-  currentCompany: "",
+  githubOrg: "",
 };
 
 const ApplicantForm = ({
@@ -60,7 +59,7 @@ const ApplicantForm = ({
         .map((s) => s.trim())
         .filter(Boolean),
       industry: form.industry.trim(),
-      currentCompany: form.currentCompany,
+      githubOrg: form.githubOrg.trim(),
     });
   };
 
@@ -192,27 +191,20 @@ const ApplicantForm = ({
           </div>
 
           <div className="applicant-form__field">
-            <label
-              className="applicant-form__label"
-              htmlFor="af-currentCompany"
-            >
-              Current Company{" "}
-              <span className="applicant-form__hint">(optional)</span>
+            <label className="applicant-form__label" htmlFor="af-githubOrg">
+              Employer&apos;s GitHub Org{" "}
+              <span className="applicant-form__hint">
+                (optional — used for scoring)
+              </span>
             </label>
-            <select
-              id="af-currentCompany"
+            <input
+              id="af-githubOrg"
               className="applicant-form__input"
-              name="currentCompany"
-              value={form.currentCompany}
+              name="githubOrg"
+              value={form.githubOrg}
               onChange={handleChange}
-            >
-              <option value="">— None —</option>
-              {mockCompanies.map((c) => (
-                <option key={c._id} value={c._id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
+              placeholder="e.g. microsoft, vercel, stripe"
+            />
           </div>
 
           {submitError && (

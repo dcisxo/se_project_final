@@ -11,6 +11,7 @@ const INITIAL_FORM = {
   skills: "",
   industry: "",
   currentCompany: "",
+  githubOrg: "",
   phone: "",
   linkedinUrl: "",
   coverLetter: "",
@@ -85,6 +86,7 @@ const JobApply = () => {
         .filter(Boolean),
       industry: form.industry.trim(),
       currentCompany: form.currentCompany.trim(),
+      githubOrg: form.githubOrg.trim(),
       phone: form.phone.trim(),
       linkedinUrl: form.linkedinUrl.trim(),
       coverLetter: form.coverLetter.trim(),
@@ -394,6 +396,23 @@ const JobApply = () => {
             value={form.currentCompany}
             onChange={handleChange}
             placeholder="Acme Corp"
+          />
+        </div>
+
+        <div className="job-apply__field">
+          <label className="job-apply__label" htmlFor="ja-githubOrg">
+            Employer&apos;s GitHub Organization{" "}
+            <span className="job-apply__hint">
+              (optional — used for scoring)
+            </span>
+          </label>
+          <input
+            id="ja-githubOrg"
+            className="job-apply__input"
+            name="githubOrg"
+            value={form.githubOrg}
+            onChange={handleChange}
+            placeholder="e.g. microsoft, vercel, stripe"
           />
         </div>
 

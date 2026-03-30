@@ -1,5 +1,7 @@
 const Applicant = require("../models/Applicant");
 const Job = require("../models/Job");
+const { fetchOrgData } = require("../utils/githubApi");
+const { calculateCompanySignalsScore } = require("../utils/scoringEngine");
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -47,6 +49,7 @@ const applyToJob = async (req, res, next) => {
       skills,
       industry,
       currentCompany,
+      githubOrg,
       phone,
       linkedinUrl,
       coverLetter,
@@ -94,6 +97,20 @@ const applyToJob = async (req, res, next) => {
       }
     }
 
+    // Look up the applicant's current employer on GitHub to compute company signals score
+    let companySignalsScore = null;
+    if (githubOrg && githubOrg.trim()) {
+      try {
+        const orgData = await fetchOrgData(githubOrg.trim());
+        companySignalsScore = calculateCompanySignalsScore(
+          orgData.publicRepos,
+          orgData.followers,
+        );
+      } catch {
+        // GitHub lookup failed — score stays null (defaults to 50 at scoring time)
+      }
+    }
+
     const applicant = new Applicant({
       name: name.trim(),
       email: email.trim().toLowerCase(),
@@ -102,6 +119,8 @@ const applyToJob = async (req, res, next) => {
       skills: Array.isArray(skills) ? skills : [skills],
       industry: industry.trim(),
       currentCompany: currentCompany ? currentCompany.trim() : "",
+      githubOrg: githubOrg ? githubOrg.trim() : "",
+      companySignalsScore,
       phone: phone ? phone.trim() : "",
       linkedinUrl: linkedinUrl ? linkedinUrl.trim() : "",
       coverLetter: coverLetter ? coverLetter.trim() : "",

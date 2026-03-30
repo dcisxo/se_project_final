@@ -1,5 +1,7 @@
 const Applicant = require("../models/Applicant");
 const Job = require("../models/Job");
+const { fetchOrgData } = require("../utils/githubApi");
+const { calculateCompanySignalsScore } = require("../utils/scoringEngine");
 
 const getApplicants = async (req, res, next) => {
   try {
@@ -22,8 +24,29 @@ const createApplicant = async (req, res, next) => {
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
     }
-    const { name, email, experienceYears, skills, industry, currentCompany } =
-      req.body;
+    const {
+      name,
+      email,
+      experienceYears,
+      skills,
+      industry,
+      currentCompany,
+      githubOrg,
+    } = req.body;
+
+    let companySignalsScore = null;
+    if (githubOrg && githubOrg.trim()) {
+      try {
+        const orgData = await fetchOrgData(githubOrg.trim());
+        companySignalsScore = calculateCompanySignalsScore(
+          orgData.publicRepos,
+          orgData.followers,
+        );
+      } catch {
+        // GitHub lookup failed — score stays null (defaults to 50 at scoring time)
+      }
+    }
+
     const applicant = new Applicant({
       name,
       email,
@@ -31,7 +54,9 @@ const createApplicant = async (req, res, next) => {
       experienceYears,
       skills,
       industry,
-      currentCompany,
+      currentCompany: currentCompany || "",
+      githubOrg: githubOrg ? githubOrg.trim() : "",
+      companySignalsScore,
     });
     await applicant.save();
     res.status(201).json(applicant);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { checkToken } from "../utils/auth";
-import { AuthContext } from "../hooks/useAuth";
+import { AuthContext } from "./AuthContextBase";
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
