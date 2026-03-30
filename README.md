@@ -2,6 +2,10 @@
 
 A full-stack applicant tracking system that lets hiring teams post jobs, review applicants, and score candidates using a built-in scoring engine backed by GitHub profile data.
 
+## Live Demo
+
+**[http://34.58.5.203](http://34.58.5.203)** — Deployed on Google Cloud Compute Engine (Ubuntu 22.04, Node.js + MongoDB + Nginx + PM2)
+
 ## Project Pitch
 
 - [**Here**!](https://drive.google.com/file/d/1mtm9UjZ9ZiR7C6knNc2Qwneitp9soFEX/view?usp=sharing)
