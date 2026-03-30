@@ -2,6 +2,10 @@
 
 A full-stack applicant tracking system that lets hiring teams post jobs, review applicants, and score candidates using a built-in scoring engine backed by GitHub profile data.
 
+## Project Pitch
+
+- [**Here**!](https://drive.google.com/file/d/1mtm9UjZ9ZiR7C6knNc2Qwneitp9soFEX/view?usp=sharing)
+
 ## Tech Stack
 
 **Frontend:** React 18, React Router v6, Vite  
