@@ -1,15 +1,15 @@
 require("dotenv").config();
 
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const authRoutes = require("./routes/authRoutes");
-const jobRoutes = require("./routes/jobRoutes");
-const applicantRoutes = require("./routes/applicantRoutes");
-const publicRoutes = require("./routes/publicRoutes");
-const { getAllApplicants } = require("./controllers/applicantController");
-const auth = require("./middleware/auth");
-const errorHandler = require("./middleware/errorHandler");
+import express, { json } from "express";
+import { connect } from "mongoose";
+import cors from "cors";
+import authRoutes from "./routes/authRoutes";
+import jobRoutes from "./routes/jobRoutes";
+import applicantRoutes from "./routes/applicantRoutes";
+import publicRoutes from "./routes/publicRoutes";
+import { getAllApplicants } from "./controllers/applicantController";
+import auth from "./middleware/auth";
+import errorHandler from "./middleware/errorHandler";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,7 +21,7 @@ app.use(
     credentials: true,
   }),
 );
-app.use(express.json());
+app.use(json());
 
 // Routes
 app.use("/auth", authRoutes);
@@ -38,8 +38,7 @@ app.use((req, res) => {
 // Central error handler (must be last)
 app.use(errorHandler);
 
-mongoose
-  .connect(MONGO_URI)
+connect(MONGO_URI)
   .then(() => {
     console.log("Connected to MongoDB");
     app.listen(PORT, () => {

@@ -1,13 +1,13 @@
-const Applicant = require("../models/Applicant");
-const Job = require("../models/Job");
-const { fetchOrgData } = require("../utils/githubApi");
-const { calculateCompanySignalsScore } = require("../utils/scoringEngine");
+import Applicant from "../models/Applicant";
+import { find, findOne } from "../models/Job";
+import { fetchOrgData } from "../utils/githubApi";
+import { calculateCompanySignalsScore } from "../utils/scoringEngine";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const getPublicJobs = async (req, res, next) => {
   try {
-    const jobs = await Job.find({ isActive: true })
+    const jobs = await find({ isActive: true })
       .select("-createdBy")
       .sort({ createdAt: -1 });
     res.json(jobs);
@@ -18,7 +18,7 @@ const getPublicJobs = async (req, res, next) => {
 
 const getPublicJobById = async (req, res, next) => {
   try {
-    const job = await Job.findOne({
+    const job = await findOne({
       _id: req.params.jobId,
       isActive: true,
     }).select("-createdBy");
@@ -35,7 +35,7 @@ const getPublicJobById = async (req, res, next) => {
 
 const applyToJob = async (req, res, next) => {
   try {
-    const job = await Job.findOne({ _id: req.params.jobId, isActive: true });
+    const job = await findOne({ _id: req.params.jobId, isActive: true });
     if (!job) {
       return res
         .status(404)
@@ -142,4 +142,4 @@ const applyToJob = async (req, res, next) => {
   }
 };
 
-module.exports = { getPublicJobs, getPublicJobById, applyToJob };
+export default { getPublicJobs, getPublicJobById, applyToJob };

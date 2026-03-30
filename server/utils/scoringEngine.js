@@ -13,4 +13,4 @@ const calculateCompanySignalsScore = (publicRepos, followers) => {
   return Math.round(repoScore * 0.4 + followerScore * 0.6);
 };
 
-module.exports = { calculateCompanySignalsScore };
+export default { calculateCompanySignalsScore };

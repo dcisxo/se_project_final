@@ -1,13 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const {
+import { Router } from "express";
+const router = Router();
+import {
   getCompanyData,
   getJobs,
   getJobById,
   createJob,
   updateJob,
-} = require("../controllers/jobController");
-const auth = require("../middleware/auth");
+} from "../controllers/jobController";
+import auth from "../middleware/auth";
 
 // Protected: requires valid JWT
 router.get("/github/:orgName", auth, getCompanyData);
@@ -16,4 +16,4 @@ router.get("/jobs/:id", auth, getJobById);
 router.post("/jobs", auth, createJob);
 router.put("/jobs/:id", auth, updateJob);
 
-module.exports = router;
+export default router;
