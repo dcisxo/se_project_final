@@ -1,0 +1,142 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  color: black;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.navbar__logo {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+
+.navbar__search {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  margin: 0 32px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px 16px;
+  gap: 12px;
+}
+
+.navbar__search-icon {
+  color: #888;
+  font-size: 16px;
+}
+
+.navbar__search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  color: #1a1a2e;
+  background: transparent;
+}
+
+.navbar__search-input::placeholder {
+  color: #9ca3af;
+}
+
+.navbar__search-count {
+  font-size: 13px;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+.navbar__search-btn {
+  padding: 8px 20px;
+  background-color: #3b4ef8;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.navbar__search-btn:hover {
+  background-color: #2d3fd6;
+}
+
+.navbar__link {
+  margin-right: 24px;
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+}
+
+.navbar__link--board {
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.navbar__nav {
+  display: flex;
+  align-items: center;
+}
+
+.navbar__profile {
+  position: relative;
+  cursor: pointer;
+}
+
+.navbar__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-image: url(/src/assets/images/killua-soda.gif);
+  background-size: cover;
+  background-position: center;
+}
+
+.navbar__avatar_placeholder {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.navbar__dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  min-width: 150px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.navbar__dropdown-name {
+  margin: 0 0 8px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.navbar__dropdown-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #e74c3c;
+  font-size: 14px;
+  padding: 0;
+}

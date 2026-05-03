@@ -1,0 +1,430 @@
+.job-apply {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.job-apply__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #4f46e5;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 28px;
+}
+
+.job-apply__back:hover {
+  text-decoration: underline;
+}
+
+.job-apply__job-details {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.job-apply__job-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0 0 12px;
+}
+
+.job-apply__job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.job-apply__job-meta-item {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.job-apply__job-description {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.6;
+  margin: 0 0 14px;
+}
+
+.job-apply__skills-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 6px;
+}
+
+.job-apply__skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+}
+
+.job-apply__skill {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #ede9fe;
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.job-apply__skill--preferred {
+  background: #f3f4f6;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.job-apply__form-heading {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0 0 24px;
+}
+
+.job-apply__form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.job-apply__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 520px) {
+  .job-apply__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.job-apply__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.job-apply__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.job-apply__required {
+  color: #ef4444;
+}
+
+.job-apply__hint {
+  font-size: 12px;
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.job-apply__input {
+  padding: 10px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1a1a2e;
+  background: #fafafa;
+  transition: border-color 0.15s;
+  outline: none;
+}
+
+.job-apply__input:focus {
+  border-color: #4f46e5;
+  background: #fff;
+}
+
+.job-apply__input--error {
+  border-color: #ef4444;
+}
+
+.job-apply__error-msg {
+  font-size: 12px;
+  color: #ef4444;
+}
+
+.job-apply__submit-error {
+  font-size: 14px;
+  color: #ef4444;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 0;
+}
+
+.job-apply__submit-btn {
+  align-self: flex-start;
+  padding: 12px 32px;
+  background-color: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.job-apply__submit-btn:hover {
+  background-color: #4338ca;
+}
+
+.job-apply__submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Success state */
+.job-apply__success {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.job-apply__success-icon {
+  font-size: 56px;
+  margin-bottom: 20px;
+}
+
+.job-apply__success-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0 0 12px;
+}
+
+.job-apply__success-msg {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0 0 32px;
+}
+
+.job-apply__success-btn {
+  padding: 12px 28px;
+  background-color: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.job-apply__success-btn:hover {
+  background-color: #4338ca;
+}
+
+.job-apply__loading {
+  text-align: center;
+  padding: 60px 0;
+  color: #6b7280;
+}
+
+/* Textarea variant */
+.job-apply__textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+/* Mandatory requirements checklist */
+.job-apply__requirements {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.job-apply__requirements-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 10px;
+}
+
+.job-apply__requirements-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.job-apply__req-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.job-apply__req-icon {
+  font-size: 14px;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.job-apply__req-item--met {
+  color: #16a34a;
+}
+
+.job-apply__req-item--unmet {
+  color: #9ca3af;
+}
+
+/* GitHub org preview */
+.job-apply__org-status {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 4px 0 0;
+}
+
+.job-apply__org-error {
+  font-size: 12px;
+  color: #ef4444;
+  margin: 4px 0 0;
+}
+
+.job-apply__org-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: #f5f3ff;
+  border: 1px solid #c4b5fd;
+  border-radius: 10px;
+}
+
+.job-apply__org-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.job-apply__org-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.job-apply__org-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.job-apply__org-desc {
+  font-size: 12px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.job-apply__org-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.job-apply__org-stat {
+  font-size: 12px;
+  color: #374151;
+}
+
+.job-apply__org-score {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.job-apply__org-score--high {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.job-apply__org-score--mid {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+.job-apply__org-score--low {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Auto-rejected state */
+.job-apply__rejected {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.job-apply__rejected-icon {
+  font-size: 56px;
+  color: #ef4444;
+  margin-bottom: 20px;
+}
+
+.job-apply__rejected-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0 0 12px;
+}
+
+.job-apply__rejected-msg {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0 0 20px;
+}
+
+.job-apply__rejected-reasons {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 440px;
+}
+
+.job-apply__rejected-reasons li {
+  font-size: 14px;
+  color: #ef4444;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 8px 14px;
+  text-align: left;
+}
