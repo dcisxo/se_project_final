@@ -65,7 +65,11 @@ const _stubCheckToken = (token) => {
 // server is unreachable (TypeError = network error / no server running).
 // ---------------------------------------------------------------------------
 
-const BASE_URL = "/auth";
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(
+  /\/$/,
+  "",
+);
+const BASE_URL = API_BASE_URL ? `${API_BASE_URL}/auth` : "/auth";
 
 const checkResponse = (res) => {
   if (!res.ok) {

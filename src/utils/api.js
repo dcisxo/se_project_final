@@ -1,6 +1,10 @@
 import { mockJobs, mockApplicants } from "../data/mockData";
 
-const BASE_URL = "/api";
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(
+  /\/$/,
+  "",
+);
+const BASE_URL = API_BASE_URL ? `${API_BASE_URL}/api` : "/api";
 
 const request = (endpoint, options = {}) => {
   const token = localStorage.getItem("jwt");
