@@ -6,6 +6,47 @@ A full-stack applicant tracking system that lets hiring teams post jobs, review 
 
 **[http://34.58.5.203](http://34.58.5.203)** — Deployed on Google Cloud Compute Engine (Ubuntu 22.04, Node.js + MongoDB + Nginx + PM2)
 
+## Deploying on Railway
+
+The project is structured for two separate Railway services: one for the **frontend** (static Vite build) and one for the **backend** (Express API). A third Railway resource, the **MongoDB plugin**, is attached to the backend service.
+
+### Step-by-step
+
+#### 1. Create the backend service
+
+1. In Railway, create a new project and add a **GitHub repo** service. Set the **Root Directory** to `server/`.
+2. Add a **MongoDB** plugin to the project. Railway will automatically set `MONGO_URI` in the backend service via a reference variable.
+3. Set the following environment variables on the backend service:
+
+| Variable          | Value                                                                        |
+| ----------------- | ---------------------------------------------------------------------------- |
+| `MONGO_URI`       | `${{MongoDB.MONGO_URI}}` (Railway reference)                                 |
+| `JWT_SECRET`      | Long random string                                                           |
+| `GITHUB_TOKEN`    | GitHub Personal Access Token (optional — raises API limit to 5 000/hr)       |
+| `ORG_ACCESS_CODE` | Registration access code, e.g. `HIRERANK-2026`                               |
+| `CLIENT_ORIGIN`   | Frontend Railway URL once known — leave blank initially to allow all origins |
+
+4. Deploy. Railway will run `npm install` then `node app.js`.
+
+#### 2. Create the frontend service
+
+1. Add another **GitHub repo** service to the same project, leave the root directory as `/` (project root).
+2. Set the following environment variable **before** the first build:
+
+| Variable            | Value                                                                     |
+| ------------------- | ------------------------------------------------------------------------- |
+| `VITE_API_BASE_URL` | Backend Railway public URL, e.g. `https://yourapp-backend.up.railway.app` |
+
+3. Deploy. Railway will run `npm install && npm run build` then `npm start` (`serve -s dist`).
+
+> **Tip:** Use Railway's reference variables so services are linked automatically:  
+> `VITE_API_BASE_URL = ${{backend-service-name.RAILWAY_PUBLIC_DOMAIN}}`  
+> _(prefix with `https://`)_
+
+#### 3. Finish wiring up
+
+Once both services are live, set `CLIENT_ORIGIN` on the backend service to the frontend's Railway URL, then redeploy the backend.
+
 ## Project Pitch
 
 - [**Here**!](https://drive.google.com/file/d/1mtm9UjZ9ZiR7C6knNc2Qwneitp9soFEX/view?usp=sharing)

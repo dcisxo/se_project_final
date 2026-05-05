@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
-import { getPublicJobById, applyToJob } from "../../utils/api";
-import { fetchOrgData } from "../../utils/GithubApi";
+import {
+  getPublicJobById,
+  applyToJob,
+  getPublicCompanyData,
+} from "../../utils/api";
 import "./JobApply.css";
 
 const INITIAL_FORM = {
@@ -51,7 +54,7 @@ const JobApply = () => {
     }
     setOrgLoading(true);
     orgDebounceRef.current = setTimeout(() => {
-      fetchOrgData(value)
+      getPublicCompanyData(value)
         .then((data) => {
           setOrgPreview(data);
           setOrgError(null);

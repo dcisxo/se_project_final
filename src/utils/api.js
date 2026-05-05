@@ -84,3 +84,6 @@ export const applyToJob = (jobId, applicantData) =>
     method: "POST",
     body: JSON.stringify(applicantData),
   });
+
+export const getPublicCompanyData = (orgName) =>
+  request(`/public/github/${orgName}`);
