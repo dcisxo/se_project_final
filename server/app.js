@@ -13,11 +13,15 @@ import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/hirerank";
+const { MONGO_URI, CLIENT_ORIGIN } = process.env;
+
+if (!MONGO_URI) {
+  throw new Error("MONGO_URI is not defined");
+}
 
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN || "http://localhost:3000",
+    origin: process.env.CLIENT_ORIGIN,
     credentials: true,
   }),
 );
