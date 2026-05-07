@@ -73,8 +73,14 @@ const BASE_URL = API_BASE_URL ? `${API_BASE_URL}/auth` : "/auth";
 
 const checkResponse = (res) => {
   if (!res.ok) {
-    return res.json().then((data) => {
-      throw new Error(data.message || `Server error: ${res.status}`);
+    return res.text().then((text) => {
+      let message;
+      try {
+        message = JSON.parse(text).message;
+      } catch {
+        message = text;
+      }
+      throw new Error(message || `Server error: ${res.status}`);
     });
   }
   return res.json();
