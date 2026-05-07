@@ -71,20 +71,19 @@ const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(
 );
 const BASE_URL = API_BASE_URL ? `${API_BASE_URL}/auth` : "/auth";
 
-const checkResponse = (res) => {
-  if (!res.ok) {
-    return res.text().then((text) => {
-      let message;
-      try {
-        message = JSON.parse(text).message;
-      } catch {
-        message = text;
-      }
-      throw new Error(message || `Server error: ${res.status}`);
-    });
-  }
-  return res.json();
-};
+const checkResponse = (res) =>
+  res.text().then((text) => {
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error(`Server error: ${res.status}`);
+    }
+    if (!res.ok) {
+      throw new Error(data.message || `Server error: ${res.status}`);
+    }
+    return data;
+  });
 
 export const registerUser = (name, email, password, accessCode) =>
   fetch(`${BASE_URL}/register`, {
